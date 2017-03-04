@@ -5,11 +5,11 @@ class Case:
         self._position = position
 
     def toString(self):
-        if self.case_bin == "00":
+        if self._case_bin == "00":
             return " . "
-        elif self.case_bin == "01":
+        elif self._case_bin == "01":
             return " x "
-        elif self.case_bin == "10":
+        elif self._case_bin == "10":
             return " o "
 
     def get_position(self):
