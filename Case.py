@@ -1,8 +1,7 @@
 class Case:
 
-    def __init__(self, case_bin, position):
+    def __init__(self, case_bin):
         self._case_bin = case_bin
-        self._position = position
 
     def toString(self):
         if self._case_bin == "00":
@@ -12,5 +11,3 @@ class Case:
         elif self._case_bin == "10":
             return " o "
 
-    def get_position(self):
-        return self._position
