@@ -1,4 +1,5 @@
 from MetaGame import MetaGame
+from GameTree import GameTree
 import sys
 
 # mode = sys.argv[1]
@@ -9,8 +10,8 @@ import sys
 # except ValueError:
 #     mode = sys.argv[1]
 #     root = int(sys.argv[2])
-#     if mode == "p":
+#     if mode == 'p':
 #         print(MetaGame(root))
 
-print(MetaGame('50108575830944474631295726113174877917119154324756'))
+print(GameTree(MetaGame('330716890198477834926403213994701218254008155997460'), 1))
 

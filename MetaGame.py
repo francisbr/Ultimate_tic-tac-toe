@@ -6,9 +6,9 @@ META_COL = 3
 class MetaGame:
 
     def __init__(self, meta_integer):
-        self.meta_bin = self.__convert_to_bin(meta_integer)
-        print(self.meta_bin)
-        self.list_game = []
+        self._meta_bin = self.__convert_to_bin(meta_integer)
+        self._last_move = int(self._meta_bin[0:7], 2)
+        self._list_game = []
         self.__create_list_game()
 
     def __convert_to_bin(self, str_integer):
@@ -24,12 +24,23 @@ class MetaGame:
 
     def __create_list_game(self):
         bits_per_game = Game.GAME_ROW * Game.GAME_COL * 2
-        last_move = int(self.meta_bin[0:7], 2)
-        for i in range(7, len(self.meta_bin), bits_per_game):
-            if (i - 7)//2 <= last_move < ((i - 7) + bits_per_game)//2:
-                self.list_game.append(Game(self.meta_bin[i:i + bits_per_game], last_move))
+        for i in range(7, len(self._meta_bin), bits_per_game):
+            if (i - 7)//2 <= self._last_move < ((i - 7) + bits_per_game)//2:   # si le dernier mouvement se trouve dans cette partie
+                self._list_game.append(Game(self._meta_bin[i:i + bits_per_game], (i - 7)/bits_per_game, self._last_move))
             else:
-                self.list_game.append(Game(self.meta_bin[i:i + bits_per_game]))
+                self._list_game.append(Game(self._meta_bin[i:i + bits_per_game], (i - 7)/bits_per_game))
+
+    def get_last_move(self):
+        return self._last_move
+
+    def get_game(self, position):
+        return self._list_game[position]
+
+    def get_meta_bin(self):
+        return self._meta_bin
+
+    def get_meta_int(self):
+        return str(int(self._meta_bin, 2))
 
     def __str__(self):
         str_print = ''
@@ -38,7 +49,7 @@ class MetaGame:
         for k in range(META_ROW):
             str_line1 = str_line2 = str_line3 = ''
             j = 0
-            for game in self.list_game[k * META_COL:(k + 1) * META_COL]:
+            for game in self._list_game[k * META_COL:(k + 1) * META_COL]:
                 j += 1
                 for i in range(len(game.get_case_list())):
                     if i % game_size in (0, 1, 2):
