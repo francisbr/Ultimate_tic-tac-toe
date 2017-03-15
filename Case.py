@@ -26,12 +26,7 @@ class Case:
         return self._case_str
 
     def is_x(self):
-        if self._case_bin == '01':
-            return True
-        return False
-
-    def is_o(self):
-        if self._case_bin == '10':
+        if self._case_str == 'x' or self._case_str == 'X':
             return True
         return False
 
