@@ -9,9 +9,11 @@ try:
     root = int(sys.argv[1])
 except ValueError:
     mode = sys.argv[1]
-    root = int(sys.argv[2])
     if mode == 'p':
+        root = int(sys.argv[2])
         print(MetaGame(root))
-
-# print(GameTree(MetaGame('330716890198477834926403213994701218254008155997460'), 4))
+    elif mode == 'a':
+        depth = int(sys.argv[2])
+        root = int(sys.argv[3])
+        print(GameTree(MetaGame(root), depth+1))
 

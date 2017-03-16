@@ -42,6 +42,33 @@ class MetaGame:
     def get_meta_int(self):
         return str(int(self._meta_bin, 2))
 
+    def empty_cases(self):
+        for game in self._list_game:
+            if not game.is_won():
+                for case in game.empty_cases():
+                    yield case
+
+    def is_won(self):
+        games_won = [self._list_game[0].is_won(), self._list_game[1].is_won(), self._list_game[2].is_won(),
+                     self._list_game[3].is_won(), self._list_game[4].is_won(), self._list_game[5].is_won(),
+                     self._list_game[6].is_won(), self._list_game[7].is_won(), self._list_game[8].is_won()]
+
+        if  (games_won[0] == games_won[4] == games_won[8]) or \
+            (games_won[1] == games_won[4] == games_won[7]) or \
+            (games_won[3] == games_won[4] == games_won[5]) or \
+            (games_won[4] == games_won[6] == games_won[2]):
+                if games_won[4] is not None:
+                    return games_won[4]
+        if  (games_won[2] == games_won[5] == games_won[8]) or \
+            (games_won[6] == games_won[7] == games_won[8]):
+                if games_won[8] is not None:
+                    return games_won[8]
+        if  (games_won[0] == games_won[1] == games_won[2]) or \
+            (games_won[0] == games_won[3] == games_won[6]):
+                if games_won[0] is not None:
+                    return games_won[0]
+        return None
+
     def __str__(self):
         str_print = ''
         game_size = Game.GAME_ROW * Game.GAME_COL

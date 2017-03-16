@@ -46,3 +46,9 @@ class Case:
         while len(bin_position) < 7:
             bin_position = '0' + bin_position
         return bin_position
+
+    def __eq__(self, other):
+        if self._case_bin == '01' or self._case_bin == '10' and \
+           other._case_bin == '01' or other._case_bin == '10':
+            return self._case_bin == other._case_bin
+        return False
