@@ -31,16 +31,30 @@ class MetaGame:
                 self._list_game.append(Game(self._meta_bin[i:i + bits_per_game], (i - 7)/bits_per_game))
 
     def possible_moves(self):
+        list_moves = []
         next_game = self.get_game(self._last_move % 9)
         if next_game.winner() is not None:              # si la sous-partie est gagnée ou est pleine
             for game in self._list_game:
                 game_winner = game.winner()
                 if game_winner is None and game_winner != 'n':
                     for case in game.empty_cases():
-                        yield case
+                        next_int = self.get_int(case.get_bin_position())
+                        list_moves.append(MetaGame(next_int))
         else:
             for case in next_game.empty_cases():
-                yield case
+                next_int = self.get_int(case.get_bin_position())
+                list_moves.append(MetaGame(next_int))
+
+        return list_moves
+
+    def get_int(self, move):
+        for i in range(0, 80, 9):
+            if i <= self._last_move < i + 9:
+                last_case = self.get_game(i // 9).get_case(self._last_move % 9)
+        if last_case.is_x():
+            return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '10' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
+        else:
+            return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '01' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
 
     def get_last_move(self):
         return self._last_move

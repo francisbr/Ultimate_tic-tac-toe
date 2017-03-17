@@ -17,3 +17,4 @@ except ValueError:
         root = int(sys.argv[3])
         print(GameTree(MetaGame(root), depth+1))
 
+
