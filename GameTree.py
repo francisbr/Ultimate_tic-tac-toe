@@ -11,17 +11,14 @@ class GameTree:
         self._create_children(last_move, self._root, 1)
 
     def _create_children(self, last_move, current, x):
-        if x == self._depth or current.get_meta().is_won() is not None:
+        if x == self._depth or current.get_meta().winner() is not None:
             return
         else:
             current_meta_bin = current.get_meta().get_meta_bin()
             for i in range(0, 80, 9):
                 if i <= last_move < i + 9:
                     last_case = current.get_meta().get_game(i // 9).get_case(last_move % 9)
-            next_game = current.get_meta().get_game(last_move % 9)
-            if next_game.is_won() is not None:
-                next_game = current.get_meta()
-            for case in next_game.empty_cases():
+            for case in current.get_meta().possible_moves():
                 if last_case.is_x():
                     new_meta_bin = case.get_bin_position() + \
                                    current_meta_bin[7:7 + (2 * case.get_position())] + \
