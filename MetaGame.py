@@ -10,6 +10,9 @@ class MetaGame:
         self._last_move = int(self._meta_bin[0:7], 2)
         self._list_game = []
         self.__create_list_game()
+        for i in range(0, 80, 9):
+            if i <= self._last_move < i + 9:
+                self._last_case = self.get_game(i // 9).get_case(self._last_move % 9)
 
     def __convert_to_bin(self, str_integer):
         """
@@ -48,16 +51,16 @@ class MetaGame:
         return list_moves
 
     def get_int(self, move):
-        for i in range(0, 80, 9):
-            if i <= self._last_move < i + 9:
-                last_case = self.get_game(i // 9).get_case(self._last_move % 9)
-        if last_case.is_x():
+        if self._last_case.is_x():
             return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '10' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
-        else:
+        elif self._last_case.is_o():
             return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '01' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
 
     def get_last_move(self):
         return self._last_move
+
+    def get_last_case(self):
+        return self._last_case
 
     def get_game(self, position):
         return self._list_game[position]
@@ -70,8 +73,8 @@ class MetaGame:
 
     def winner(self):
         games_winner = [self._list_game[0].winner(), self._list_game[1].winner(), self._list_game[2].winner(),
-                     self._list_game[3].winner(), self._list_game[4].winner(), self._list_game[5].winner(),
-                     self._list_game[6].winner(), self._list_game[7].winner(), self._list_game[8].winner()]
+                        self._list_game[3].winner(), self._list_game[4].winner(), self._list_game[5].winner(),
+                        self._list_game[6].winner(), self._list_game[7].winner(), self._list_game[8].winner()]
 
         if  (games_winner[0] == games_winner[4] == games_winner[8]) or \
             (games_winner[1] == games_winner[4] == games_winner[7]) or \
