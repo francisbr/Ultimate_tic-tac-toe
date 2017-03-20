@@ -14,24 +14,21 @@ class Game:
         self.__create_list(game_bin)
 
     def __create_list(self, game_bin):
+        """ place les elements dans mini-game """
         for i in range(0, len(game_bin), 2):
             if self._last_move >= 0 and self._last_move % self._size == i//2:
                 self._list_case.append(Case(game_bin[i:i + 2], (i//2) + (self._position * 9), True))
             else:
                 self._list_case.append(Case(game_bin[i:i + 2], (i//2) + (self._position * 9)))
 
-    def get_case_list(self):
-        return self._list_case
-
-    def get_case(self, position):
-        return self._list_case[position]
-
     def empty_cases(self):
+        """ retourne les cases libres de la mini-game """
         for case in self._list_case:
             if case.is_empty():
                 yield case
 
     def winner(self):
+        """ retourne le gagnant de la mini-game ou indique si elle est nulle """
         if  self._list_case[0] == self._list_case[4] == self._list_case[8] or \
             self._list_case[1] == self._list_case[4] == self._list_case[7] or \
             self._list_case[3] == self._list_case[4] == self._list_case[5] or \
@@ -65,3 +62,9 @@ class Game:
 
     def get_position(self):
         return self._position
+
+    def get_case_list(self):
+        return self._list_case
+
+    def get_case(self, position):
+        return self._list_case[position]

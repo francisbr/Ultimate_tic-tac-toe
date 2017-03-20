@@ -5,7 +5,7 @@ import sys
 try:
     root = int(sys.argv[1])
     tree = GameTree(MetaGame(root), 2)
-    print(tree.root().sample(1000))
+    print(tree.root().best_move(1000))
 except ValueError:
     mode = sys.argv[1]
     if mode == 'p':

@@ -10,6 +10,7 @@ class GameTree:
         self._create_children(self._root, 1)
 
     def _create_children(self, current, x):
+        """ cree un arbre a partir d'une racine """
         if x == self._depth or current.get_meta().winner() is not None:
             return
         else:

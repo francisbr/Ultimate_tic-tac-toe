@@ -8,12 +8,12 @@ class Node:
         self._depth = depth
         self._children = []
 
-    def add_child(self, child):
-        self._children.append(child)
-
-    def sample(self, n):
-        list_counters_x = []
-        list_counters_o = []
+    def best_move(self, n):
+        """
+        Détermine lequel des enfants donne le plus de chances de gagner la partie
+        :param n: nombre de tests par enfant
+        :return: l'enfant ayant la plus grande probabilite de l'emporter
+        """
         if self._meta.get_last_case().is_x():
             next_symbol = 'o'
         elif self._meta.get_last_case().is_o():
@@ -21,43 +21,46 @@ class Node:
         for child in self._children:
             if child.get_meta().winner() == next_symbol:
                 return child.get_meta().get_meta_int()
+
+        return self._count_winner(next_symbol, n)
+
+    def _count_winner(self, symbol, n):
+        """ evalue la probabilité de victoire pour chaque enfant """
+        list_counters = []
+        one_way = False
+
         for child in self._children:
-            counter_x = 0
-            counter_o = 0
+            counter = 0
             meta = child.get_meta()
             for i in range(n):
                 done = False
                 while not done:
                     possible_moves = meta.possible_moves()
+                    if len(possible_moves) == 1:
+                        one_way = True                                          # si un move oblige l'adversaire a jouer a une position qui assure la victoire
                     for grand_child in possible_moves:
                         winner = grand_child.winner()
                         if winner is not None:
-                            if winner == 'x':
-                                counter_x += 1
-                            elif winner == 'o':
-                                counter_o += 1
+                            if winner == symbol:
+                                if one_way:
+                                    return child.get_meta().get_meta_int()
+                                counter += 1
                             done = True
                             continue
                     if not done:
                         meta = random.choice(possible_moves)
-            list_counters_x.append(counter_x)
-            list_counters_o.append(counter_o)
+            list_counters.append(counter)
 
         best_index = 0
-        if next_symbol == 'x':
-            highest = list_counters_x[0]
-            for i in range(1, len(list_counters_x)):
-                if list_counters_x[i] > highest:
-                    highest = list_counters_x[i]
-                    best_index = i
-        else:
-            highest = list_counters_o[0]
-            for i in range(1, len(list_counters_o)):
-                if list_counters_o[i] > highest:
-                    highest = list_counters_o[i]
-                    best_index = i
-
+        highest = list_counters[0]
+        for i in range(1, len(list_counters)):
+            if list_counters[i] > highest:
+                highest = list_counters[i]
+                best_index = i
         return self._children[best_index].get_meta().get_meta_int()
+
+    def add_child(self, child):
+        self._children.append(child)
 
     def get_children(self):
         return self._children

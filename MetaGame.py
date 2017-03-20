@@ -26,6 +26,7 @@ class MetaGame:
         return str_bin
 
     def __create_list_game(self):
+        """ place des elements dans la meta-game"""
         bits_per_game = Game.GAME_ROW * Game.GAME_COL * 2
         for i in range(7, len(self._meta_bin), bits_per_game):
             if (i - 7)//2 <= self._last_move < ((i - 7) + bits_per_game)//2:   # si le dernier mouvement se trouve dans cette partie
@@ -34,6 +35,7 @@ class MetaGame:
                 self._list_game.append(Game(self._meta_bin[i:i + bits_per_game], (i - 7)/bits_per_game))
 
     def possible_moves(self):
+        """ retourne les mouvements qu'il est possible d'effectuer a partir de la configuration actuelle """
         list_moves = []
         next_game = self.get_game(self._last_move % 9)
         if next_game.winner() is not None:              # si la sous-partie est gagnée ou est pleine
@@ -51,6 +53,7 @@ class MetaGame:
         return list_moves
 
     def get_int(self, move):
+        """ retounre l'entier de la configuration suivant le coup < move >"""
         if self._last_case.is_x():
             return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '10' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
         elif self._last_case.is_o():
@@ -72,6 +75,7 @@ class MetaGame:
         return str(int(self._meta_bin, 2))
 
     def winner(self):
+        """ retourne le gagnat de la meta-game ou indique qu'elle est nulle """
         games_winner = [self._list_game[0].winner(), self._list_game[1].winner(), self._list_game[2].winner(),
                         self._list_game[3].winner(), self._list_game[4].winner(), self._list_game[5].winner(),
                         self._list_game[6].winner(), self._list_game[7].winner(), self._list_game[8].winner()]

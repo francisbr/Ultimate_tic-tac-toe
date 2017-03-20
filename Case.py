@@ -48,7 +48,6 @@ class Case:
         return bin_position
 
     def __eq__(self, other):
-        if self._case_bin == '01' or self._case_bin == '10' and \
-           other._case_bin == '01' or other._case_bin == '10':
+        if not self._case_bin == '00':
             return self._case_bin == other._case_bin
         return False
