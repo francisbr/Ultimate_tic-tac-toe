@@ -44,6 +44,7 @@ class Node:
                         if winner == symbol:
                             counter += 1
                         done = True
+                    length_game += 1
                     if length_game > 10:                    # le programme ne regarde pas plus de 10 coups à l'avance
                         done = True
                     if not done:
