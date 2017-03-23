@@ -7,15 +7,15 @@ META_COL = 3
 class MetaGame:
 
     def __init__(self, meta_integer):
-        self._meta_bin = self.__convert_to_bin(meta_integer)
+        self._meta_bin = self._convert_to_bin(meta_integer)
         self._last_move = int(self._meta_bin[0:7], 2)
         self._list_game = []
-        self.__create_list_game()
+        self._create_list_game()
         for i in range(0, 80, 9):
             if i <= self._last_move < i + 9:
                 self._last_case = self.get_game(i // 9).get_case(self._last_move % 9)
 
-    def __convert_to_bin(self, str_integer):
+    def _convert_to_bin(self, str_integer):
         """
         convertir l'entier de depart en binaire
         :param str_integer: entier du jeu
@@ -26,7 +26,7 @@ class MetaGame:
             str_bin = "0" + str_bin
         return str_bin
 
-    def __create_list_game(self):
+    def _create_list_game(self):
         """ place des elements dans la meta-game"""
         bits_per_game = Game.GAME_ROW * Game.GAME_COL * 2
         for i in range(7, len(self._meta_bin), bits_per_game):
@@ -56,7 +56,7 @@ class MetaGame:
     def random_move(self):
         list_moves = []
         next_game = self.get_game(self._last_move % 9)
-        if next_game.winner() is not None:  # si la sous-partie est gagnée ou est pleine
+        if next_game.winner() is not None:                  # si la sous-partie est gagnée ou est pleine
             for game in self._list_game:
                 game_winner = game.winner()
                 if game_winner is None and game_winner != 'n':
@@ -77,7 +77,7 @@ class MetaGame:
         """ retounre l'entier de la configuration suivant le coup < move >"""
         if self._last_case.is_x():
             return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '10' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
-        elif self._last_case.is_o():
+        else:
             return int(move + self._meta_bin[7:7 + (2 * int(move, 2))] + '01' + self._meta_bin[9 + (2 * int(move, 2)):170], 2)
 
     def get_last_move(self):
@@ -97,73 +97,6 @@ class MetaGame:
 
     def winner(self):
         """ retourne le gagnat de la meta-game ou indique qu'elle est nulle """
-        # for i in range(0, 80, 9):
-        #     if i <= self._last_move < i + 9:
-        #         last_game = self.get_game(i // 9)
-        #         last_index = i//9
-        #
-        # games_winner = [self._list_game[0].winner(), self._list_game[1].winner(), self._list_game[2].winner(),
-        #                 self._list_game[3].winner(), self._list_game[4].winner(), self._list_game[5].winner(),
-        #                 self._list_game[6].winner(), self._list_game[7].winner(), self._list_game[8].winner()]
-        #
-        # if last_game.winner() is not None:
-        #     if last_index == 0:
-        #         if  (games_winner[0] == games_winner[1] == games_winner[2]) or \
-        #             (games_winner[0] == games_winner[3] == games_winner[6]) or \
-        #             (games_winner[0] == games_winner[4] == games_winner[8]):
-        #                 if games_winner[0] != 'n':
-        #                     return games_winner[0]
-        #     elif last_index == 1:
-        #         if  (games_winner[0] == games_winner[1] == games_winner[2]) or \
-        #             (games_winner[1] == games_winner[4] == games_winner[7]):
-        #                 if games_winner[1] != 'n':
-        #                     return games_winner[1]
-        #     elif last_index == 2:
-        #         if  (games_winner[0] == games_winner[1] == games_winner[2]) or \
-        #             (games_winner[2] == games_winner[5] == games_winner[8]) or \
-        #             (games_winner[2] == games_winner[4] == games_winner[6]):
-        #                 if games_winner[2] != 'n':
-        #                     return games_winner[2]
-        #     elif last_index == 3:
-        #         if  (games_winner[0] == games_winner[3] == games_winner[6]) or \
-        #             (games_winner[3] == games_winner[4] == games_winner[5]):
-        #                 if games_winner[3] != 'n':
-        #                     return games_winner[3]
-        #     elif last_index == 4:
-        #         if  (games_winner[0] == games_winner[4] == games_winner[8]) or \
-        #             (games_winner[1] == games_winner[4] == games_winner[7]) or \
-        #             (games_winner[3] == games_winner[4] == games_winner[5]) or \
-        #             (games_winner[6] == games_winner[4] == games_winner[2]):
-        #                 if games_winner[4] != 'n':
-        #                     return games_winner[4]
-        #     elif last_index == 5:
-        #         if  (games_winner[2] == games_winner[5] == games_winner[8]) or \
-        #             (games_winner[3] == games_winner[4] == games_winner[5]):
-        #                 if games_winner[5] != 'n':
-        #                     return games_winner[5]
-        #     elif last_index == 6:
-        #         if  (games_winner[0] == games_winner[3] == games_winner[6]) or \
-        #             (games_winner[6] == games_winner[4] == games_winner[2]) or \
-        #             (games_winner[6] == games_winner[7] == games_winner[8]):
-        #                 if games_winner[6] != 'n':
-        #                     return games_winner[6]
-        #     elif last_index == 7:
-        #         if  (games_winner[1] == games_winner[4] == games_winner[7]) or \
-        #             (games_winner[6] == games_winner[7] == games_winner[8]):
-        #                 if games_winner[7] != 'n':
-        #                     return games_winner[7]
-        #     elif last_index == 8:
-        #         if  (games_winner[0] == games_winner[4] == games_winner[8]) or \
-        #             (games_winner[2] == games_winner[5] == games_winner[8]) or \
-        #             (games_winner[6] == games_winner[7] == games_winner[8]):
-        #                 if games_winner[8] != 'n':
-        #                     return games_winner[8]
-        #     if (games_winner[0] is not None and games_winner[1] is not None and games_winner[2] is not None and
-        #         games_winner[3] is not None and games_winner[4] is not None and games_winner[5] is not None and
-        #         games_winner[6] is not None and games_winner[7] is not None and games_winner[8] is not None):
-        #             return 'n'
-        #     else:
-        #         return None
 
         games_winner = [self._list_game[0].winner(), self._list_game[1].winner(), self._list_game[2].winner(),
                         self._list_game[3].winner(), self._list_game[4].winner(), self._list_game[5].winner(),

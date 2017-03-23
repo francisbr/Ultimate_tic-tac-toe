@@ -1,5 +1,5 @@
 class ArrayQueue:
-    """Classe tiree du manuel 'Data Structures & Algorithms in Python' de """
+    """Classe tiree du manuel 'Data Structures & Algorithms in Python'"""
     DEFAULT_CAPACITY = 10   # moderate capacity for all new queues
 
     def __init__(self):

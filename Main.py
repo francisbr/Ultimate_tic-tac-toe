@@ -1,7 +1,7 @@
 from MetaGame import MetaGame
 from GameTree import GameTree
 import sys
-import timing
+
 
 try:
     root = int(sys.argv[1])
